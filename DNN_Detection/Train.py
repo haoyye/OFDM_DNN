@@ -81,7 +81,7 @@ def train(config):
             'encoder_b1': tf.Variable(tf.truncated_normal([n_hidden_1],stddev=0.1)),
             'encoder_b2': tf.Variable(tf.truncated_normal([n_hidden_2],stddev=0.1)),
             'encoder_b3': tf.Variable(tf.truncated_normal([n_hidden_3],stddev=0.1)),
-	    'encoder_b4': tf.Variable(tf.truncated_normal([n_output],stddev=0.1)),	  
+            'encoder_b4': tf.Variable(tf.truncated_normal([n_output],stddev=0.1)),          
             
         }
         
@@ -89,8 +89,8 @@ def train(config):
         #layer_1 = tf.nn.sigmoid(tf.add(tf.matmul(x, weights['encoder_h1']), biases['encoder_b1']))
         layer_1 = tf.nn.relu(tf.add(tf.matmul(x, weights['encoder_h1']), biases['encoder_b1']))
         layer_2 = tf.nn.relu(tf.add(tf.matmul(layer_1, weights['encoder_h2']), biases['encoder_b2']))
-	layer_3 = tf.nn.relu(tf.add(tf.matmul(layer_2, weights['encoder_h3']), biases['encoder_b3']))
-	layer_4 = tf.nn.sigmoid(tf.add(tf.matmul(layer_3, weights['encoder_h4']), biases['encoder_b4']))
+        layer_3 = tf.nn.relu(tf.add(tf.matmul(layer_2, weights['encoder_h3']), biases['encoder_b3']))
+        layer_4 = tf.nn.sigmoid(tf.add(tf.matmul(layer_3, weights['encoder_h4']), biases['encoder_b4']))
         return layer_4
 
 
@@ -121,18 +121,18 @@ def train(config):
     channel_response_set_train = []
     for train_idx in range(train_idx_low,train_idx_high):
         H_file = H_folder_train + str(train_idx) + '.txt'
-	with open(H_file) as f:
+        with open(H_file) as f:
             for line in f:
-      	        numbers_str = line.split()
+                      numbers_str = line.split()
                 numbers_float = [float(x) for x in numbers_str]
                 h_response = np.asarray(numbers_float[0:int(len(numbers_float)/2)])+1j*np.asarray(numbers_float[int(len(numbers_float)/2):len(numbers_float)])
                 channel_response_set_train.append(h_response)
     channel_response_set_test = []
     for test_idx in range(test_idx_low,test_idx_high):
-	H_file = H_folder_test + str(test_idx) + '.txt'
-	with open(H_file) as f:
+        H_file = H_folder_test + str(test_idx) + '.txt'
+        with open(H_file) as f:
             for line in f:
-      	        numbers_str = line.split()
+                numbers_str = line.split()
                 numbers_float = [float(x) for x in numbers_str]
                 h_response = np.asarray(numbers_float[0:int(len(numbers_float)/2)])+1j*np.asarray(numbers_float[int(len(numbers_float)/2):len(numbers_float)])
                 channel_response_set_test.append(h_response)
@@ -148,36 +148,36 @@ def train(config):
             if epoch > 0 and epoch % config.learning_rate_decrease_step == 0:
                 learning_rate_current = learning_rate_current/5                    
             avg_cost = 0.
-            total_batch = 50	
+            total_batch = 50        
             #print (K, P,pilotValue, learning_rate_current)
             for index_m in range(total_batch):
                 input_samples = []
                 input_labels = []
                 for index_k in range(0, 1000):
                     bits = np.random.binomial(n=1, p=0.5, size=(payloadBits_per_OFDM, ))
-		    channel_response = channel_response_set_train[np.random.randint(0,len(channel_response_set_train))]
-		    signal_output, para = ofdm_simulate(bits,channel_response,SNRdb, mu, CP_flag, K, P, CP, pilotValue,pilotCarriers, dataCarriers,Clipping_Flag)
+                    channel_response = channel_response_set_train[np.random.randint(0,len(channel_response_set_train))]
+                    signal_output, para = ofdm_simulate(bits,channel_response,SNRdb, mu, CP_flag, K, P, CP, pilotValue,pilotCarriers, dataCarriers,Clipping_Flag)
                     #signal_output, para = ofdm_simulate(bits,channel_response,SNRdb,pilotValue)    
-		    input_labels.append(bits[config.pred_range])
-		    input_samples.append(signal_output)  
-		batch_x = np.asarray(input_samples)
-		batch_y = np.asarray(input_labels)
-		_,c = sess.run([optimizer,cost], feed_dict={X:batch_x,
+                    input_labels.append(bits[config.pred_range])
+                    input_samples.append(signal_output)  
+                batch_x = np.asarray(input_samples)
+                batch_y = np.asarray(input_labels)
+                _,c = sess.run([optimizer,cost], feed_dict={X:batch_x,
                                                                 Y:batch_y,
                                                                 learning_rate:learning_rate_current})
-		avg_cost += c / total_batch
+                avg_cost += c / total_batch
             if epoch % display_step == 0:
                 print("Epoch:",'%04d' % (epoch+1), "cost=", \
                        "{:.9f}".format(avg_cost))
                 input_samples_test = []
                 input_labels_test = []
-		test_number = 1000
-		# set test channel response for this epoch		    
-		if epoch % test_step == 0:
-		    print ("Big Test Set ")
-		    test_number = 10000
+                test_number = 1000
+                # set test channel response for this epoch                    
+                if epoch % test_step == 0:
+                    print ("Big Test Set ")
+                    test_number = 10000
                 for i in range(0, test_number):
-                    bits = np.random.binomial(n=1, p=0.5, size=(payloadBits_per_OFDM, ))			
+                    bits = np.random.binomial(n=1, p=0.5, size=(payloadBits_per_OFDM, ))                        
                     channel_response= channel_response_set_test[np.random.randint(0,len(channel_response_set_test))]
                     signal_output, para = ofdm_simulate(bits,channel_response,SNRdb,mu, CP_flag, K, P, CP, pilotValue,pilotCarriers, dataCarriers,Clipping_Flag)
                     #signal_output, para = ofdm_simulate(bits,channel_response,SNRdb,pilotValue)
@@ -199,7 +199,7 @@ def train(config):
                 print("BER on train set", BER.eval({X:batch_x}))
             if epoch % model_saving_step == 0:
                 saving_name = config.Model_path + 'SNR_' + str(SNRdb) + '/DetectionModel_SNR_' + str(SNRdb) + '_Pilot_' + str(P) + '_epoch_' + str(epoch)
-		saver.save(sess, saving_name)         
+                saver.save(sess, saving_name)         
         print("optimization finished")
 
 
