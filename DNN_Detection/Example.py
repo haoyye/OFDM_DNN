@@ -180,7 +180,7 @@ def training():
             H_file = H_folder_train + str(train_idx) + '.txt'
             with open(H_file) as f:
                 for line in f:
-                          numbers_str = line.split()
+                    numbers_str = line.split()
                     numbers_float = [float(x) for x in numbers_str]
                     h_response = np.asarray(numbers_float[0:int(len(numbers_float)/2)])+1j*np.asarray(numbers_float[int(len(numbers_float)/2):len(numbers_float)])
                     channel_response_set_train.append(h_response)
@@ -190,7 +190,7 @@ def training():
             H_file = H_folder_test + str(test_idx) + '.txt'
             with open(H_file) as f:
                 for line in f:
-                          numbers_str = line.split()
+                    numbers_str = line.split()
                     numbers_float = [float(x) for x in numbers_str]
                     h_response = np.asarray(numbers_float[0:int(len(numbers_float)/2)])+1j*np.asarray(numbers_float[int(len(numbers_float)/2):len(numbers_float)])
                     channel_response_set_test.append(h_response)
@@ -212,7 +212,7 @@ def training():
                     input_labels = []
                     for index_k in range(0, 1000):
                         bits = np.random.binomial(n=1, p=0.5, size=(payloadBits_per_OFDM, ))
-                            channel_response = channel_response_set_train[np.random.randint(0,len(channel_response_set_train))]
+                        channel_response = channel_response_set_train[np.random.randint(0,len(channel_response_set_train))]
                         signal_output, para = ofdm_simulate(bits,channel_response,SNRdb)   
                         input_labels.append(bits[16:32])
                         input_samples.append(signal_output)  

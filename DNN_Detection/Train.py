@@ -123,7 +123,7 @@ def train(config):
         H_file = H_folder_train + str(train_idx) + '.txt'
         with open(H_file) as f:
             for line in f:
-                      numbers_str = line.split()
+                numbers_str = line.split()
                 numbers_float = [float(x) for x in numbers_str]
                 h_response = np.asarray(numbers_float[0:int(len(numbers_float)/2)])+1j*np.asarray(numbers_float[int(len(numbers_float)/2):len(numbers_float)])
                 channel_response_set_train.append(h_response)
