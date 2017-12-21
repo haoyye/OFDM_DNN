@@ -7,8 +7,8 @@ class sysconfig(object):
     with_CP_flag = True 
     SNR = 20
     Clipping = False
-    Train_set_path = '../H_dataset/Train/'
-    Test_set_path = '../H_dataset/Test/'
+    Train_set_path = '../H_dataset/'
+    Test_set_path = '../H_dataset/'
     Model_path = '../Models/'
     pred_range = np.arange(16,32)
     learning_rate = 0.001
