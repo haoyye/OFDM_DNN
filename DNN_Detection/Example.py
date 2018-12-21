@@ -168,8 +168,8 @@ def training():
         config = tf.ConfigProto()
         config.gpu_options.allow_growth = True
         # The H information set
-        H_folder_train = '../H_dataset/Train/'
-        H_folder_test = '../H_dataset/Test/'
+        H_folder_train = '../H_dataset/'
+        H_folder_test = '../H_dataset/'
         train_idx_low = 1
         train_idx_high = 301
         test_idx_low = 301
