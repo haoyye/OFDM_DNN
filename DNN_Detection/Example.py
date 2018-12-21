@@ -177,6 +177,7 @@ def training():
         # Saving Channel conditions to a large matrix
         channel_response_set_train = []
         for train_idx in range(train_idx_low,train_idx_high):
+            print("Processing the ", train_idx, "th document")
             H_file = H_folder_train + str(train_idx) + '.txt'
             with open(H_file) as f:
                 for line in f:
@@ -187,6 +188,7 @@ def training():
         
         channel_response_set_test = []
         for test_idx in range(test_idx_low,test_idx_high):
+            print("Processing the ", test_idx, "th document")
             H_file = H_folder_test + str(test_idx) + '.txt'
             with open(H_file) as f:
                 for line in f:
@@ -244,7 +246,7 @@ def training():
                     encode_decode = sess.run(y_pred, feed_dict = {X:batch_x})
                     mean_error = tf.reduce_mean(abs(y_pred - batch_y))
                     mean_error_rate = 1-tf.reduce_mean(tf.reduce_mean(tf.to_float(tf.equal(tf.sign(y_pred-0.5), tf.cast(tf.sign(batch_y-0.5),tf.float32))),1))               
-                    print("OFDM Detection QAM output number is", n_output, "SNR = ", SNRdb, "Num Pilot", P,"prediction and the mean error on test set are:", mean_error.eval({X:batch_x}), mean_error_rate.eval({X:batch_x}))
+                    print("OFDM Detection QAM output number is", n_output, ",SNR = ", SNRdb, ",Num Pilot = ", P,", prediction and the mean error on test set are:", mean_error.eval({X:batch_x}), mean_error_rate.eval({X:batch_x}))
                     
                     
                     batch_x = np.asarray(input_samples)
@@ -252,7 +254,7 @@ def training():
                     encode_decode = sess.run(y_pred, feed_dict = {X:batch_x})
                     mean_error = tf.reduce_mean(abs(y_pred - batch_y))                    
                     mean_error_rate = 1-tf.reduce_mean(tf.reduce_mean(tf.to_float(tf.equal(tf.sign(y_pred-0.5), tf.cast(tf.sign(batch_y-0.5),tf.float32))),1))
-                    print("prediction and the mean error on train set are:", mean_error.eval({X:batch_x}), mean_error_rate.eval({X:batch_x}))
+                    print("Prediction and the mean error on train set are:", mean_error.eval({X:batch_x}), mean_error_rate.eval({X:batch_x}))
                     
             print("optimization finished")
 
